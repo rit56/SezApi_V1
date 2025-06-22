@@ -8,7 +8,7 @@ using SezApi.Model.Response;
 using SezApi.Services;
 namespace SezApi.Controllers
 {
-    //API
+    //API 555
     [ApiController]
     [Route("[controller]")]
     public class SezController : Controller
