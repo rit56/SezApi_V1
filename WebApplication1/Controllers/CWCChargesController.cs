@@ -94,7 +94,7 @@ namespace SezApi.Controllers
         }
         #endregion
 
-        //#region MISC Charge
+        #region MISC Charge sahom
         //[HttpPost("AddMISCCharge")]
         //public async Task<IActionResult> AddMISCCharge(RequestHTCharge request)
         //{
@@ -126,6 +126,6 @@ namespace SezApi.Controllers
         //        return StatusCode(500, $"Internal server error: {ex.Message}");
         //    }
         //}
-        //#endregion
+        #endregion
     }
 }
