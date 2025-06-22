@@ -1,0 +1,21 @@
+﻿using SezApi.Model.DBModels;
+using SezApi.Model.Request;
+using SezApi.Model.Response;
+
+namespace SezApi.Services
+{
+    public interface IServices 
+    {
+        Task AddTest(test product);
+        Task<AddEditResponse> AddMststorageCharge(RequestMststorageCharge mststorageCharge);
+        Task<Response<List<mststoragecharge>>> GetMststorageCharge();
+        Task<AddEditResponse> AddEditGetEntry(RequestGetEntry request);
+        Task<Response<List<GetEntry>>> GetAllEntries();
+        Task<Response<List<MstOperation>>> GetMstOperation();
+        Task<Response<MstSac>> GetMstSacByOperation(int SacId);//
+        Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge);
+        Task<Response<List<ResponseHTCharge>>> GetHTCharge(int? HTChargesID);
+        Task<AddEditResponse> AddGroundRentCharge(RequestGroundRentCharge GRCharge);
+     
+    }
+}
