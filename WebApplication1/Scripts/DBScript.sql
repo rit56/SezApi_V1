@@ -36,7 +36,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 --EXEC [dbo].[SP_GetGroundRentChargeList] 1
-CREATE PROCEDURE [dbo].[SP_GetGroundRentChargeList]
+CREATE  PROCEDURE [dbo].[SP_GetGroundRentChargeList]
     @GroundRentId INT = 0
 AS
 BEGIN
@@ -56,11 +56,21 @@ BEGIN
 					END AS ContainerType,
 				commodity.CommodityType AS ContainerDetails,
 				ground.Size,
-				ground.fcllcl AS FCLLCL,
+
+				CASE 
+					WHEN ground.fcllcl = '1' THEN 'FCL' 
+					WHEN ground.fcllcl = '2' THEN 'LCL' 
+				ELSE 'Other' END AS FCLLCL,
 				ground.RentAmount AS Amount,
-				operation.OperationType 
+				--operation.OperationType 
+				CASE 
+					WHEN ground.ContainerType = 1 THEN 'Import' 
+					WHEN ground.ContainerType = 2 THEN 'Export' 
+					WHEN ground.ContainerType = 3 THEN 'Empty Import' 
+					WHEN ground.ContainerType = 4 THEN 'Empty Export' 
+				ELSE 'Other' END AS OperationType
 				FROM [dbo].[mstgroundrent] ground
-				LEFT JOIN [dbo].[mstoperation] operation on ground.SacCodeId = operation.SacId
+				--LEFT JOIN [dbo].[mstoperation] operation on ground.SacCodeId = operation.SacId
 				LEFT JOIN [dbo].[mstsac] sac ON sac.SacId=ground.SacCodeId
 				LEFT JOIN [dbo].[MstCommodity] commodity ON commodity.CommodityId = ground.CommodityType
 		END
@@ -79,18 +89,26 @@ BEGIN
 					END AS ContainerType,
 				commodity.CommodityType AS ContainerDetails,
 				ground.Size,
-				ground.fcllcl AS FCLLCL,
+
+				CASE 
+					WHEN ground.fcllcl = '1' THEN 'FCL' 
+					WHEN ground.fcllcl = '2' THEN 'LCL' 
+				ELSE 'Other' END AS FCLLCL,
 				ground.RentAmount AS Amount,
-				operation.OperationType 
+				--operation.OperationType 
+				CASE 
+					WHEN ground.ContainerType = 1 THEN 'Import' 
+					WHEN ground.ContainerType = 2 THEN 'Export' 
+					WHEN ground.ContainerType = 3 THEN 'Empty Import' 
+					WHEN ground.ContainerType = 4 THEN 'Empty Export' 
+				ELSE 'Other' END AS OperationType
 				FROM [dbo].[mstgroundrent] ground
-				LEFT JOIN [dbo].[mstoperation] operation on ground.SacCodeId = operation.SacId
+				--LEFT JOIN [dbo].[mstoperation] operation on ground.SacCodeId = operation.SacId
 				LEFT JOIN [dbo].[mstsac] sac ON sac.SacId=ground.SacCodeId
 				LEFT JOIN [dbo].[MstCommodity] commodity ON commodity.CommodityId = ground.CommodityType
 				WHERE ground.GroundRentId = @GroundRentId;
 		END
 END
-
-
 
 GO
 /****** Object:  StoredProcedure [dbo].[SP_GetReeferChargeList]    Script Date: 26-06-2025 11:09:17 ******/
@@ -109,7 +127,7 @@ IF ISNULL(@ReeferChrgId, 0) = 0
 	SELECT 
 	  ReeferChrgId, 
 	  SacCodeId, 
-	  EffectiveDate, 
+	  EffectiveDate,  
 	  SacCode, 
 	  [Hours], 
 	  Size, 
@@ -301,6 +319,77 @@ DECLARE @SacCode NVARCHAR(7) = NULL
 	END CATCH
 
 	select 'OK' AS response
+END
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_AddEditMiscCharge]
+    @MiscellaneousId INT = NULL,  
+	@EffectiveDate DATE = NULL,
+	@SacCodeId INT = 0,
+	@OperationId INT = 0,
+	@Size NVARCHAR(20) = NULL,
+	@Rate DECIMAL(10, 2) = NULL,
+	@CreatedBy INT = NULL,
+    @UpdatedBy INT = NULL
+AS
+BEGIN
+DECLARE @SacCode NVARCHAR(7) = NULL
+    SET NOCOUNT ON;
+	
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        IF EXISTS (SELECT 1 FROM mstmiscellaneous WHERE MiscellaneousId = @MiscellaneousId)
+		--IF ISNULL(@MiscellaneousId,0) = 0
+        BEGIN
+            -- UPDATE
+            UPDATE [dbo].[mstmiscellaneous]
+            SET
+                SacCode = @SacCode,
+				EffectiveDate= @EffectiveDate,
+				SacCodeId = @SacCodeId,
+				OperationId= @OperationId,
+				Size = @Size,
+				Rate = @Rate,
+				UpdatedBy = @UpdatedBy,
+                UpdatedOn = GETDATE()
+            WHERE MiscellaneousId = @MiscellaneousId;
+        END
+        ELSE
+        BEGIN
+            -- INSERT
+            INSERT INTO [dbo].[mstmiscellaneous] (
+                EffectiveDate,
+                SacCode,
+				SacCodeId,
+				OperationId,
+				Size,
+				Rate,
+				CreatedBy,
+                CreatedOn
+            )
+            VALUES (
+				@EffectiveDate,
+                @SacCode,
+				@SacCodeId,
+				@OperationId,
+				@Size,
+				@Rate,
+				@CreatedBy,
+                GETDATE()
+            );
+        END
+
+        COMMIT TRANSACTION;
+        SELECT 'Success' AS Response;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        SELECT ERROR_MESSAGE() AS Response;
+    END CATCH
 END
 
 

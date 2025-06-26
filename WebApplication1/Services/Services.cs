@@ -383,9 +383,35 @@ namespace SezApi.Services
         #endregion
 
         #region MISCCharge
-        public Task<AddEditResponse> AddMISCCharge(RequestMISCCharge MISCCharge)
+        public async Task<AddEditResponse> AddMISCCharge(RequestMISCCharge MISCCharge)
         {
-            throw new NotImplementedException();
+            var response = new AddEditResponse();
+
+            try
+            {
+                var result = await _db.AddEditResponse
+                    .FromSqlInterpolated($@"
+                EXEC Sp_AddEditMiscCharge 
+                    {MISCCharge.MiscellaneousId},
+                    {MISCCharge.EffectiveDate},
+                    {MISCCharge.SacCodeId},
+                    {MISCCharge.OperationId},
+                    {MISCCharge.Size},
+                    {MISCCharge.Rate},
+                    {MISCCharge.CreatedBy},
+                    {MISCCharge.UpdatedBy}")
+                    .ToListAsync();
+
+                response.Response = result.FirstOrDefault()?.Response ?? "No response from stored procedure.";
+            }
+            catch (Exception ex)
+            {
+                // Optional: Log the exception
+                // _logger.LogError(ex, "SP_AddHTCharge failed");
+                response.Response = "An unexpected error occurred while processing the request.";
+            }
+
+            return response;
         }
 
         public async Task<Response<List<ResponseMISCCharge>>> GetMISCCharge(int? MiscellaneousId)
