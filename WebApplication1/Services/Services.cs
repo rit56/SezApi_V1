@@ -215,6 +215,25 @@ namespace SezApi.Services
             return response;
         }
 
+        public async Task<Response<List<MstSac>>> GetMstSacAll()
+        {
+            var response = new Response<List<MstSac>>();
+
+            try
+            {
+                
+                response.Data = await _db.GetMstSac.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstSac>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+       
         public async Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge)
         {
             var response = new AddEditResponse();

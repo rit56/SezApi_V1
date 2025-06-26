@@ -52,5 +52,18 @@ namespace SezApi.Controllers
 
             return Ok(response);
         }
+        [HttpGet("GetMstSacAll")]
+        public async Task<ActionResult<List<MstSac>>> GetMstSacAll()
+        {
+
+            var response = await _services.GetMstSacAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
     }
 }
