@@ -117,7 +117,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 --EXEC [dbo].[SP_GetReeferChargeList] 1
-CREATE PROCEDURE [dbo].[SP_GetReeferChargeList] 
+ALTER PROCEDURE [dbo].[SP_GetReeferChargeList] 
   @ReeferChrgId INT = 0 
 AS 
 BEGIN 
@@ -125,30 +125,32 @@ SET NOCOUNT ON;
 IF ISNULL(@ReeferChrgId, 0) = 0 
 	BEGIN 
 	SELECT 
-	  ReeferChrgId, 
-	  SacCodeId, 
-	  EffectiveDate,  
-	  SacCode, 
-	  [Hours], 
-	  Size, 
-	  Rate 
+	  refer.ReeferChrgId, 
+	  refer.SacCodeId, 
+	  refer.EffectiveDate, 
+	  sac.SacCode, 
+	  refer.[Hours], 
+	  refer.Size, 
+	  refer.Rate 
 		FROM 
-		[dbo].[mstreeferchrg] 
+		[dbo].[mstreeferchrg] refer
+		LEFT JOIN [dbo].[mstsac] sac ON sac.SacId = refer.SacCodeId
 	END 
 ELSE 
 	BEGIN 
 	SELECT 
-	  ReeferChrgId, 
-	  SacCodeId, 
-	  EffectiveDate, 
-	  SacCode, 
-	  [Hours], 
-	  Size, 
-	  Rate 
+	  refer.ReeferChrgId, 
+	  refer.SacCodeId, 
+	  refer.EffectiveDate, 
+	  sac.SacCode, 
+	  refer.[Hours], 
+	  refer.Size, 
+	  refer.Rate 
 		FROM 
-		[dbo].[mstreeferchrg] 
+		[dbo].[mstreeferchrg] refer
+		LEFT JOIN [dbo].[mstsac] sac ON sac.SacId = refer.SacCodeId 
 		WHERE 
-		ReeferChrgId = @ReeferChrgId;
+		refer.ReeferChrgId = @ReeferChrgId;
 	END 
 END
 
@@ -159,7 +161,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 --EXEC [dbo].[SP_GetMISCChargeList] 1
-CREATE PROCEDURE [dbo].[SP_GetMISCChargeList] 
+ALTER PROCEDURE [dbo].[SP_GetMISCChargeList] 
   @MiscellaneousId INT = 0 
 AS 
 BEGIN 
@@ -168,8 +170,8 @@ IF ISNULL(@MiscellaneousId, 0) = 0
 	BEGIN 
 	SELECT 
 	  misc.MiscellaneousId,
-	  misc.SacCodeId,
-	  misc.SacCode,
+	  operation.SacId AS SacCodeId,
+	  sac.SacCode,
 	  misc.EffectiveDate,
 	  misc.OperationId,
 	  operation.OperationDesc,
@@ -177,14 +179,15 @@ IF ISNULL(@MiscellaneousId, 0) = 0
 	  misc.Rate
 		FROM 
 		[dbo].[mstmiscellaneous] misc 
-		JOIN [dbo].[mstoperation] operation ON misc.OperationId = operation.OperationId 
+		LEFT JOIN [dbo].[mstoperation] operation ON misc.OperationId = operation.OperationId
+		LEFT JOIN [dbo].[mstsac] sac ON sac.SacId=operation.SacId
 	END 
 ELSE 
 	BEGIN 
 	SELECT 
 	  misc.MiscellaneousId,
-	  misc.SacCodeId,
-	  misc.SacCode,
+	  operation.SacId AS SacCodeId,
+	  sac.SacCode,
 	  misc.EffectiveDate,
 	  misc.OperationId,
 	  operation.OperationDesc,
@@ -192,14 +195,12 @@ ELSE
 	  misc.Rate
 		FROM 
 		[dbo].[mstmiscellaneous] misc 
-		JOIN [dbo].[mstoperation] operation ON misc.OperationId = operation.OperationId 
+		LEFT JOIN [dbo].[mstoperation] operation ON misc.OperationId = operation.OperationId
+		LEFT JOIN [dbo].[mstsac] sac ON sac.SacId=operation.SacId
 		WHERE misc.MiscellaneousId = @MiscellaneousId;
 	END 
 END
 
-
-/****** Object:  StoredProcedure [dbo].[SP_AddGroundRentCharge]    Script Date: 26-06-2025 12:15:27 ******/
-SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
