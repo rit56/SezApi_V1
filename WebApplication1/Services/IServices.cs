@@ -13,6 +13,7 @@ namespace SezApi.Services
         Task<Response<List<GetEntry>>> GetAllEntries();
         Task<Response<List<MstOperation>>> GetMstOperation();
         Task<Response<MstSac>> GetMstSacByOperation(int SacId);//
+        Task<Response<List<MstSac>>> GetMstSacAll();
         Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge);
         Task<Response<List<ResponseHTCharge>>> GetHTCharge(int? HTChargesID);
 
