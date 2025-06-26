@@ -45,12 +45,12 @@ namespace SezApi.Controllers
             }
         }
         [HttpGet("GETGroundRentChargeList")]
-        public async Task<IActionResult> GETGroundRentChargeList(int? HTChargesID)
+        public async Task<IActionResult> GETGroundRentChargeList(int? GroundRentId)
         {
 
             try
             {
-                var result = await _services.GetHTCharge(HTChargesID);
+                var result = await _services.GetGroundRentCharge(GroundRentId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace SezApi.Controllers
 
         #region Refer Charge
         [HttpPost("AddReferCharge")]
-        public async Task<IActionResult> AddReferCharge(RequestHTCharge request)
+        public async Task<IActionResult> AddReferCharge(RequestReeferCharge request)
         {
             if (request == null)
             {
@@ -70,7 +70,7 @@ namespace SezApi.Controllers
             }
             try
             {
-                var result = await _services.AddHTCharge(request);
+                var result = await _services.AddReeferCharge(request);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -78,13 +78,13 @@ namespace SezApi.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("GETReferChargeList")]
-        public async Task<IActionResult> GETReferChargeList(int? HTChargesID)
-        {
 
+        [HttpGet("GETReferChargeList")]
+        public async Task<IActionResult> GETReferChargeList(int? ReeferChrgId)
+        {
             try
             {
-                var result = await _services.GetHTCharge(HTChargesID);
+                var result = await _services.GetReeferCharge(ReeferChrgId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -95,37 +95,37 @@ namespace SezApi.Controllers
         #endregion
 
         #region MISC Charge sahom
-        //[HttpPost("AddMISCCharge")]
-        //public async Task<IActionResult> AddMISCCharge(RequestHTCharge request)
-        //{
-        //    if (request == null)
-        //    {
-        //        return BadRequest("Request data is required.");
-        //    }
-        //    try
-        //    {
-        //        var result = await _services.AddHTCharge(request);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
-        //[HttpGet("GETMISCChargeList")]
-        //public async Task<IActionResult> GETMISCChargeList(int? HTChargesID)
-        //{
+        [HttpPost("AddMISCCharge")]
+        public async Task<IActionResult> AddMISCCharge(RequestMISCCharge request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Request data is required.");
+            }
+            try
+            {
+                var result = await _services.AddMISCCharge(request);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        [HttpGet("GETMISCChargeList")]
+        public async Task<IActionResult> GETMISCChargeList(int? MiscellaneousId)
+        {
 
-        //    try
-        //    {
-        //        var result = await _services.GetHTCharge(HTChargesID);
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
+            try
+            {
+                var result = await _services.GetMISCCharge(MiscellaneousId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         #endregion
     }
 }

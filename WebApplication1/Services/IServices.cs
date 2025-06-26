@@ -15,7 +15,21 @@ namespace SezApi.Services
         Task<Response<MstSac>> GetMstSacByOperation(int SacId);//
         Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge);
         Task<Response<List<ResponseHTCharge>>> GetHTCharge(int? HTChargesID);
+
+        #region GroundRentCharge
         Task<AddEditResponse> AddGroundRentCharge(RequestGroundRentCharge GRCharge);
-     
+        Task<Response<List<ResponseGroundRentCharge>>> GetGroundRentCharge(int? GroundRentID);
+        #endregion
+
+        #region ReeferCharge
+        Task<AddEditResponse> AddReeferCharge(RequestReeferCharge RFCharge);
+        Task<Response<List<ResponseReeferCharge>>> GetReeferCharge(int? ReeferChrgId);
+        #endregion
+
+        #region MISCCharge
+        Task<AddEditResponse> AddMISCCharge(RequestMISCCharge MISCCharge);
+        Task<Response<List<ResponseMISCCharge>>> GetMISCCharge(int? MiscellaneousId);
+        #endregion
+
     }
 }

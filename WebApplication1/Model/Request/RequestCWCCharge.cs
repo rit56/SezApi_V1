@@ -4,7 +4,7 @@
     {
         public int? GroundRentId { get; set; }
         public DateTime EffectiveDate { get; set; }
-        public int? SACId { get; set; }
+        public int? SacCodeId { get; set; }
         public int? DaysRangeFrom { get; set; }
         public int? DaysRangeTo { get; set; }
         public int? ContainerType { get; set; }

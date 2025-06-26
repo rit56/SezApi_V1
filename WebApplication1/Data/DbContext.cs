@@ -24,5 +24,11 @@ namespace SezApi.Data
 
         public DbSet<ResponseHTCharge> GetHTChargesResponse { get; set; }
 
+        public DbSet<ResponseGroundRentCharge> GetGroundRentChargesResponse { get; set; }
+
+        public DbSet<ResponseReeferCharge> GetReeferChargesResponse { get; set; }
+
+        public DbSet<ResponseMISCCharge> GetMISCChargesResponse { get; set; } 
+
     }
 }

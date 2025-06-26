@@ -7,7 +7,7 @@ using SezApi.Model.Response;
 using System.Linq;
 namespace SezApi.Services
 {
-    public class Services  : IServices
+    public class Services : IServices
     {
         private readonly SezApiDbContext _db;
 
@@ -67,7 +67,7 @@ namespace SezApi.Services
 
             return response;
         }
-      
+
         public async Task<Response<List<mststoragecharge>>> GetMststorageCharge()
         {
             var response = new Response<List<mststoragecharge>>();
@@ -192,7 +192,7 @@ namespace SezApi.Services
         }
         public async Task<Response<MstSac>> GetMstSacByOperation(int SacId)
         {
-           
+
             var response = new Response<MstSac>();
 
             try
@@ -265,7 +265,7 @@ namespace SezApi.Services
 
             return response;
         }
-    
+        #region GroundRentCharge
         public async Task<AddEditResponse> AddGroundRentCharge(RequestGroundRentCharge GRCharge)
         {
             var response = new AddEditResponse();
@@ -276,7 +276,7 @@ namespace SezApi.Services
                 EXEC SP_AddGroundRentCharge 
                     {GRCharge.GroundRentId},
                     {GRCharge.EffectiveDate},
-                    {GRCharge.SACId},
+                    {GRCharge.SacCodeId},
                     {GRCharge.DaysRangeFrom},
                     {GRCharge.DaysRangeTo},
                     {GRCharge.ContainerType},
@@ -299,5 +299,119 @@ namespace SezApi.Services
             return response;
         }
 
+        public async Task<Response<List<ResponseGroundRentCharge>>> GetGroundRentCharge(int? GroundRentId)
+        {
+            var response = new Response<List<ResponseGroundRentCharge>>();
+
+            try
+            {
+                var result = await _db.GetGroundRentChargesResponse
+                    .FromSqlInterpolated($@"
+                EXEC SP_GetGroundRentChargeList 
+                {GroundRentId}
+                ").ToListAsync();
+
+                response.Data = result;
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<ResponseGroundRentCharge>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+        #endregion
+
+        #region ReeferCharge
+        public async Task<AddEditResponse> AddReeferCharge(RequestReeferCharge RFCharge)
+        {
+            var response = new AddEditResponse();
+
+            try
+            {
+                var result = await _db.AddEditResponse
+                    .FromSqlInterpolated($@"
+                EXEC SP_AddHTCharge 
+                    {RFCharge.ReeferChrgId},
+                    {RFCharge.SacCodeId},
+                    {RFCharge.Size},
+                    {RFCharge.Hours},
+                    {RFCharge.Rate},
+                    {RFCharge.EffectiveDate},
+                    {RFCharge.CreatedBy},
+                    {RFCharge.UpdatedBy}")
+                    .ToListAsync();
+
+                response.Response = result.FirstOrDefault()?.Response ?? "No response from stored procedure.";
+            }
+            catch (Exception ex)
+            {
+                // Optional: Log the exception
+                // _logger.LogError(ex, "SP_AddHTCharge failed");
+                response.Response = "An unexpected error occurred while processing the request.";
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<ResponseReeferCharge>>> GetReeferCharge(int? ReeferChrgId)
+        {
+            var response = new Response<List<ResponseReeferCharge>>();
+            try
+            {
+                var data = await _db.GetReeferChargesResponse
+                    .FromSqlInterpolated($"EXEC SP_GetReeferChargeList {ReeferChrgId}")
+                    .ToListAsync();
+
+                return new Response<List<ResponseReeferCharge>>
+                {
+                    Data = data,
+                    Status = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<List<ResponseReeferCharge>>
+                {
+                    Data = [],
+                    Status = false
+                };
+            }
+        }
+        #endregion
+
+        #region MISCCharge
+        public Task<AddEditResponse> AddMISCCharge(RequestMISCCharge MISCCharge)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Response<List<ResponseMISCCharge>>> GetMISCCharge(int? MiscellaneousId)
+        {
+            var response = new Response<List<ResponseMISCCharge>>();
+            try
+            {
+                var data = await _db.GetMISCChargesResponse
+                    .FromSqlInterpolated($"EXEC SP_GetMISCChargeList {MiscellaneousId}")
+                    .ToListAsync();
+
+                return new Response<List<ResponseMISCCharge>>
+                {
+                    Data = data,
+                    Status = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<List<ResponseMISCCharge>>
+                {
+                    Data = [],
+                    Status = false
+                };
+            }
+        }
+        #endregion
     }
 }
