@@ -1,5 +1,5 @@
 EXEC sp_rename '[dbo].[mstgroundrent].SACId', 'SacCodeId', 'COLUMN';  
-
+   
 ALTER TABLE [dbo].[mstreeferchrg]
 ADD SacCodeId INT NULL,
     Size NVARCHAR(30),
