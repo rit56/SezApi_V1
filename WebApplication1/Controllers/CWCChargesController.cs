@@ -14,7 +14,7 @@ namespace SezApi.Controllers
     [Route("[controller]")]
     public class CWCChargesController : Controller
     {
-        private readonly IServices _services;  
+        private readonly IServices _services;    
 
         public CWCChargesController(IServices services)
         {
