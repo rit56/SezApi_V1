@@ -352,13 +352,13 @@ namespace SezApi.Services
             {
                 var result = await _db.AddEditResponse
                     .FromSqlInterpolated($@"
-                EXEC SP_AddHTCharge 
+                EXEC SP_AddEditReeferCharge 
                     {RFCharge.ReeferChrgId},
                     {RFCharge.SacCodeId},
-                    {RFCharge.Size},
-                    {RFCharge.Hours},
-                    {RFCharge.Rate},
                     {RFCharge.EffectiveDate},
+                    {RFCharge.Hours},
+                    {RFCharge.Size},
+                    {RFCharge.Rate},
                     {RFCharge.CreatedBy},
                     {RFCharge.UpdatedBy}")
                     .ToListAsync();

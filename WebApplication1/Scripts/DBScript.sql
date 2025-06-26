@@ -1,5 +1,5 @@
-EXEC sp_rename '[dbo].[mstgroundrent].SACId', 'SacCodeId', 'COLUMN';
-
+EXEC sp_rename '[dbo].[mstgroundrent].SACId', 'SacCodeId', 'COLUMN';  
+   
 ALTER TABLE [dbo].[mstreeferchrg]
 ADD SacCodeId INT NULL,
     Size NVARCHAR(30),
@@ -177,6 +177,130 @@ ELSE
 		JOIN [dbo].[mstoperation] operation ON misc.OperationId = operation.OperationId 
 		WHERE misc.MiscellaneousId = @MiscellaneousId;
 	END 
+END
+
+
+/****** Object:  StoredProcedure [dbo].[SP_AddGroundRentCharge]    Script Date: 26-06-2025 12:15:27 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_AddGroundRentCharge]
+
+    @GroundRentId INT = 0,
+	@EffectiveDate DATE = NULL,
+	@SACCodeId INT = 0,
+    @DaysRangeFrom INT = NULL,
+	@DaysRangeTo INT = 0,
+    @ContainerType INT = NULL,
+    @CommodityType INT = 0,
+	@Size NVARCHAR(100) = NULL,
+	@FclLcl NVARCHAR(100) = NULL,
+	@RentAmount DECIMAL(10, 2) = NULL,
+    @OperationType INT = NULL,
+	@CreatedBy INT = NULL,
+	@UpdatedBy INT = NULL
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+	BEGIN TRY
+    BEGIN TRANSACTION;
+
+		IF ISNULL(@GroundRentId,0) = 0
+		BEGIN
+			INSERT INTO  [dbo].[mstgroundrent](EffectiveDate, SACCodeId, DaysRangeFrom,DaysRangeTo,ContainerType,CommodityType,Size,FclLcl,RentAmount,OperationType,[CreatedBy],[CreatedOn])
+			VALUES (@EffectiveDate, @SACCodeId, @DaysRangeFrom,@DaysRangeTo,@ContainerType,@CommodityType,@Size,@FclLcl,@RentAmount,@OperationType,@CreatedBy, GETDATE());
+		END
+		ELSE
+		BEGIN
+			UPDATE [dbo].[mstgroundrent]
+			SET
+				EffectiveDate = @EffectiveDate,
+				SACCodeId = @SACCodeId,
+				DaysRangeFrom = @DaysRangeFrom,
+				DaysRangeTo = @DaysRangeTo,
+				ContainerType = @ContainerType,
+				CommodityType=@CommodityType,
+				Size=@Size,
+				FclLcl=@FclLcl,
+				RentAmount=@RentAmount,
+				OperationType=@OperationType,
+
+				UpdatedBy = @UpdatedBy,
+				UpdatedOn = GETDATE()
+			WHERE GroundRentId = @GroundRentId;
+		END
+
+		COMMIT;
+		SELECT 'OK' AS response;
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK;
+
+		SELECT 'NOT OK' AS response;
+	END CATCH
+
+	select 'OK' AS response
+END
+
+
+/****** Object:  StoredProcedure [dbo].[SP_AddEditReeferCharge]    Script Date: 26-06-2025 15:36:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[SP_AddEditReeferCharge]
+	@ReeferChrgId INT = 0,
+	@SacCodeId INT = 0,
+	@EffectiveDate DATE = NULL,
+	@Hours NVARCHAR(10) = NULL,
+	@Size NVARCHAR(20) = NULL,
+	@Rate DECIMAL(10, 2) = NULL,
+	@CreatedBy INT = NULL,
+	@UpdatedBy INT = NULL
+AS
+BEGIN
+DECLARE @SacCode NVARCHAR(7) = NULL
+    SET NOCOUNT ON;
+	BEGIN TRY
+    BEGIN TRANSACTION;
+
+		IF ISNULL(@ReeferChrgId,0) = 0
+		BEGIN
+			INSERT INTO  [dbo].[mstreeferchrg]
+			(SacCodeId,EffectiveDate,SacCode,[Hours],Size,Rate,[CreatedBy],[CreatedOn])
+			VALUES 
+			(@SacCodeId,@EffectiveDate,@SacCode,@Hours,@Size,@Rate,@CreatedBy, GETDATE());
+		END
+		ELSE
+		BEGIN
+			UPDATE [dbo].[mstreeferchrg]
+			SET
+				SacCodeId = @SacCodeId,
+				EffectiveDate = @EffectiveDate,
+				SacCode=@SacCode,
+				[Hours] = @Hours,
+				Size = @Size,
+				Rate = @Rate,
+				UpdatedBy = @UpdatedBy,
+				UpdatedOn = GETDATE()
+			WHERE ReeferChrgId = @ReeferChrgId;
+		END
+
+		COMMIT;
+		SELECT 'OK' AS response;
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK;
+
+		SELECT 'NOT OK' AS response;
+	END CATCH
+
+	select 'OK' AS response
 END
 
 
