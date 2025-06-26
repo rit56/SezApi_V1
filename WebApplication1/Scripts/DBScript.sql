@@ -1,4 +1,4 @@
-EXEC sp_rename '[dbo].[mstgroundrent].SACId', 'SacCodeId', 'COLUMN';
+EXEC sp_rename '[dbo].[mstgroundrent].SACId', 'SacCodeId', 'COLUMN';  
 
 ALTER TABLE [dbo].[mstreeferchrg]
 ADD SacCodeId INT NULL,
