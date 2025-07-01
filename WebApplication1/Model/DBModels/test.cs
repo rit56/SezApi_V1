@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SezApi.Model.DBModels
+namespace DpeApi.Model.DBModels
 {
     public class test
     {

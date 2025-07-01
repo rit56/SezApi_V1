@@ -1,4 +1,4 @@
-﻿namespace SezApi.Model.Response
+﻿namespace DpeApi.Model.Response
 {
     public class Response<T>
     { 

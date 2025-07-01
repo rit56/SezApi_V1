@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using SezApi.Data;
-using SezApi.Services;
+using DpeApi.Data;
+using DpeApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<SezApiDbContext>(options =>
+builder.Services.AddDbContext<DpeApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IServices, Services>();
@@ -22,14 +22,14 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-if (app.Environment.IsDevelopment()) // by default enabled only for dev.
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction()) // by default enabled only for dev.
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("https://localhost:7217/swagger/v1/swagger.json", "V1 Docs");
+    c.SwaggerEndpoint("http://localhost:87/swagger/v1/swagger.json", "V1 Docs");
 
 });
 app.UseCors(builder => builder

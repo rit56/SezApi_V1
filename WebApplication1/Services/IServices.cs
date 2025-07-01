@@ -1,8 +1,8 @@
-﻿using SezApi.Model.DBModels;
-using SezApi.Model.Request;
-using SezApi.Model.Response;
+﻿using DpeApi.Model.DBModels;
+using DpeApi.Model.Request;
+using DpeApi.Model.Response;
 
-namespace SezApi.Services
+namespace DpeApi.Services
 {
     public interface IServices 
     {

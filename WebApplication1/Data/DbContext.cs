@@ -1,15 +1,15 @@
 ﻿
 using Azure;
 using Microsoft.EntityFrameworkCore;
-using SezApi.Model;
-using SezApi.Model.DBModels;
-using SezApi.Model.Response;
+using DpeApi.Model;
+using DpeApi.Model.DBModels;
+using DpeApi.Model.Response;
 
-namespace SezApi.Data
+namespace DpeApi.Data
 {
-    public class SezApiDbContext : DbContext
+    public class DpeApiDbContext : DbContext
     {
-        public SezApiDbContext(DbContextOptions<SezApiDbContext> options)
+        public DpeApiDbContext(DbContextOptions<DpeApiDbContext> options)
             : base(options)
         {
         }

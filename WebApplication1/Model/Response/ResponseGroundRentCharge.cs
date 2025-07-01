@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SezApi.Model.Response
+namespace DpeApi.Model.Response
 {
     public class ResponseGroundRentCharge
     {

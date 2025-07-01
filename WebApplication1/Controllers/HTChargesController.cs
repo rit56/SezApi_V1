@@ -1,13 +1,13 @@
 ﻿using Azure;
 using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
-using SezApi.Data;
-using SezApi.Model.DBModels;
-using SezApi.Model.Request;
-using SezApi.Model.Response;
-using SezApi.Services;
+using DpeApi.Data;
+using DpeApi.Model.DBModels;
+using DpeApi.Model.Request;
+using DpeApi.Model.Response;
+using DpeApi.Services;
 
-namespace SezApi.Controllers
+namespace DpeApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

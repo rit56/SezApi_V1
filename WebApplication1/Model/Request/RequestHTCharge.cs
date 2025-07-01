@@ -1,4 +1,4 @@
-﻿namespace SezApi.Model.Request
+﻿namespace DpeApi.Model.Request
 {
     public class RequestHTCharge
     {

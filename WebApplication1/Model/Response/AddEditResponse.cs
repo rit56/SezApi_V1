@@ -1,7 +1,7 @@
-﻿using SezApi.Model.DBModels;
+﻿using DpeApi.Model.DBModels;
 using System.ComponentModel.DataAnnotations;
 
-namespace SezApi.Model.Response
+namespace DpeApi.Model.Response
 {
     public class AddEditResponse
     {

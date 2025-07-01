@@ -1,17 +1,17 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using SezApi.Data;
-using SezApi.Model.DBModels;
-using SezApi.Model.Request;
-using SezApi.Model.Response;
+using DpeApi.Data;
+using DpeApi.Model.DBModels;
+using DpeApi.Model.Request;
+using DpeApi.Model.Response;
 using System.Linq;
-namespace SezApi.Services
+namespace DpeApi.Services
 {
     public class Services : IServices
     {
-        private readonly SezApiDbContext _db;
+        private readonly DpeApiDbContext _db;
 
-        public Services(SezApiDbContext db)
+        public Services(DpeApiDbContext db)
         {
             _db = db;
         }
