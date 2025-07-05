@@ -20,9 +20,17 @@ namespace DpeApi.Services
         Task<Response<List<MstShippingLine>>> GetShippingLineAll();
 
         Task<Response<List<MstCHA>>> GetCHAAll();
+        Task<Response<List<MstCFSCode>>> GetCFSCodeAll();
 
 
-
+        Task<Response<List<MstLoadType>>> GetLoadTypeAll();
+        Task<Response<List<MstCargoType>>> GetCargoTypeAll();
+        Task<Response<List<MstPackageType>>> GetPackageTypeAll();
+        Task<Response<List<MstEquipmentSealType>>> GetEquipmentSealTypeAll();
+        Task<Response<List<MstEquipmentStatus>>> GetEquipmentStatusAll();
+        Task<Response<List<MstEquipmentQUC>>> GetEquipmentQUCAll();
+        Task<Response<List<MstPackUQC>>> GetPackUQCAll();
+       
         Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge);
         Task<Response<List<ResponseHTCharge>>> GetHTCharge(int? HTChargesID);
 
@@ -49,6 +57,11 @@ namespace DpeApi.Services
         #region GetIN
         Task<AddEditResponse> AddGateIn(RequestGetIn PreArr);
         Task<Response<List<ResponseGetIn>>> GETGateInList(int? PreArrID);
+        #endregion
+
+        #region CCINEntry
+        Task<AddEditResponse> AddCCINEntry(RequestCCINEntry CCINEntry);
+        Task<Response<List<ResponseCCINEntry>>> GETCCINEntryList(int? CCINEntryId);
         #endregion
 
     }

@@ -1,12 +1,5 @@
-﻿using Azure;
-using Azure.Core;
+﻿using DpeApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using DpeApi.Data;
-using DpeApi.Model.DBModels;
-using DpeApi.Model.Request;
-using DpeApi.Model.Response;
-using DpeApi.Services;
-using System.Text;
 
 namespace DpeApi.Controllers
 {
@@ -24,6 +17,8 @@ namespace DpeApi.Controllers
         {
             return View();
         }
+
+        #region Operation
 
         [HttpGet("GetMstOperation")]
         public async Task<ActionResult<List<MstOperation>>> GetMstOperation()
@@ -52,6 +47,11 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+
+        #endregion
+
+        #region Sac
+
         [HttpGet("GetMstSacAll")]
         public async Task<ActionResult<List<MstSac>>> GetMstSacAll()
         {
@@ -65,6 +65,10 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+        #endregion
+
+        #region Commodity
+
 
         [HttpGet("GetCommodityAll")]
         public async Task<ActionResult<List<MstCommodity>>> GetCommodityAll()
@@ -79,7 +83,9 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+        #endregion
 
+        #region ReferenceNo
         [HttpGet("GetReferenceNoAll")]
         public async Task<ActionResult<List<MstReferenceNo>>> GetReferenceNoAll()
         {
@@ -93,6 +99,10 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+        #endregion
+
+        #region ShippingLine
+
 
         [HttpGet("GetShippingLineAll")]
         public async Task<ActionResult<List<MstShippingLine>>> GetShippingLineAll()
@@ -107,6 +117,9 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+        #endregion
+
+        #region CHA
 
 
         [HttpGet("GetCHAAll")]
@@ -122,5 +135,150 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+        #endregion
+
+        #region CFS
+
+
+        [HttpGet("GetCFSCodeAll")]
+        public async Task<ActionResult<List<MstCHA>>> GetCFSAll()
+        {
+
+            var response = await _services.GetCFSCodeAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region CargoType
+
+
+        [HttpGet("GetCargoTypeAll")]
+        public async Task<ActionResult<List<MstCargoType>>> GetCargoTypeAll()
+        {
+
+            var response = await _services.GetCargoTypeAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region LoadType
+
+
+        [HttpGet("GetLoadTypeAll")]
+        public async Task<ActionResult<List<MstLoadType>>> GetLoadTypeAll()
+        {
+
+            var response = await _services.GetLoadTypeAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Package Type
+
+
+        [HttpGet("GetPackageTypeAll")]
+        public async Task<ActionResult<List<MstPackageType>>> GetPackageTypeAll()
+        {
+
+            var response = await _services.GetPackageTypeAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Equipment Seal Type
+
+
+        [HttpGet("GetEquipmentSealTypeAll")]
+        public async Task<ActionResult<List<MstEquipmentSealType>>> GetEquipmentSealTypeAll()
+        {
+
+            var response = await _services.GetEquipmentSealTypeAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Equipment Status
+
+        [HttpGet("GetEquipmentStatusAll")]
+        public async Task<ActionResult<List<MstEquipmentStatus>>> GetEquipmentStatusAll()
+        {
+
+            var response = await _services.GetEquipmentStatusAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Equipment QUC
+
+
+        [HttpGet("GetEquipmentQUCAll")]
+        public async Task<ActionResult<List<MstEquipmentQUC>>> GetEquipmentQUCAll()
+        {
+
+            var response = await _services.GetEquipmentQUCAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
+        #region Pack UQC
+
+
+        [HttpGet("GetPackUQCAll")]
+        public async Task<ActionResult<List<MstPackUQC>>> GetPackUQCAll()
+        {
+
+            var response = await _services.GetPackUQCAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+        #endregion
+
     }
 }

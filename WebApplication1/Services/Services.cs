@@ -305,7 +305,153 @@ namespace DpeApi.Services
 
             return response;
         }
-       
+        public async Task<Response<List<MstCFSCode>>> GetCFSCodeAll()
+        {
+            var response = new Response<List<MstCFSCode>>();
+
+            try
+            {
+                response.Data = await _db.GetCFSCode.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstCFSCode>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+
+
+        public async Task<Response<List<MstCargoType>>> GetCargoTypeAll()
+        {
+            var response = new Response<List<MstCargoType>>();
+
+            try
+            {
+                response.Data = await _db.GetCargoType.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstCargoType>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstLoadType>>> GetLoadTypeAll()
+        {
+            var response = new Response<List<MstLoadType>>();
+
+            try
+            {
+                response.Data = await _db.GetLoadType.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstLoadType>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstPackageType>>> GetPackageTypeAll()
+        {
+            var response = new Response<List<MstPackageType>>();
+
+            try
+            {
+                response.Data = await _db.GetPackageType.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstPackageType>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstEquipmentSealType>>> GetEquipmentSealTypeAll()
+        {
+            var response = new Response<List<MstEquipmentSealType>>();
+
+            try
+            {
+                response.Data = await _db.GetEquipmentSealType.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstEquipmentSealType>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstEquipmentStatus>>> GetEquipmentStatusAll()
+        {
+            var response = new Response<List<MstEquipmentStatus>>();
+
+            try
+            {
+                response.Data = await _db.GetEquipmentStatus.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstEquipmentStatus>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstEquipmentQUC>>> GetEquipmentQUCAll()
+        {
+            var response = new Response<List<MstEquipmentQUC>>();
+
+            try
+            {
+                response.Data = await _db.GetEquipmentQUC.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstEquipmentQUC>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstPackUQC>>> GetPackUQCAll()
+        {
+            var response = new Response<List<MstPackUQC>>();
+
+            try
+            {
+                response.Data = await _db.GetPackUQC.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstPackUQC>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+        
+
 
         public async Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge)
         {
@@ -663,6 +809,78 @@ namespace DpeApi.Services
             return response;
         }
         #endregion
-        
+
+        #region CCINEntry
+        public async Task<AddEditResponse> AddCCINEntry(RequestCCINEntry CCIN)
+        {
+            var response = new AddEditResponse();
+            try
+            {
+                var result = await _db.AddEditResponse
+                    .FromSqlInterpolated($@"
+                EXEC SP_AddCCINEntry 
+                    {CCIN.CCINEntryId} ,
+	                {CCIN.CFSCode} ,
+	                {CCIN.ContainerNo} ,
+	                {CCIN.Size},
+	                {CCIN.SBNO},
+                    {CCIN.SBDate} ,
+	                {CCIN.CargoType} ,
+	                {CCIN.LoadType},
+	                {CCIN.CustomSealNo},
+	                {CCIN.PackageType},
+	                {CCIN.EquipmentSealType},
+	                {CCIN.EquipmentStatus},
+	                {CCIN.EquipmentQUC},
+	                {CCIN.PackUQC},
+	                {CCIN.CargoDescription},
+	                {CCIN.NoofUnit},
+                    {CCIN.GRWT},
+	                {CCIN.FOBVAL},
+	                {CCIN.Vessel},
+	                {CCIN.Voyage},
+	                {CCIN.Rotation},
+                    {CCIN.SBEIRNo},
+                    {CCIN.CreatedBy},
+                    {CCIN.UpdatedBy}
+					
+            ").ToListAsync();
+
+                response.Response = result.FirstOrDefault()?.Response ?? "No response";
+            }
+            catch (Exception ex)
+            {
+                response.Response = "Some error occurred";
+            }
+
+            return response;
+        }
+        public async Task<Response<List<ResponseCCINEntry>>> GETCCINEntryList(int? CCINEntryId)
+        {
+            var response = new Response<List<ResponseCCINEntry>>();
+
+            try
+            {
+
+                var data = await _db.GetCCINEntry
+                   .FromSqlInterpolated($"EXEC SP_GetCCINEntry {CCINEntryId}")
+                   .ToListAsync();
+
+                return new Response<List<ResponseCCINEntry>>
+                {
+                    Data = data,
+                    Status = true
+                };
+
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<ResponseCCINEntry>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+        #endregion
     }
 }
