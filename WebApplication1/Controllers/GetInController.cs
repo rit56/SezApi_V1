@@ -42,7 +42,7 @@ namespace DpeApi.Controllers
             try
             {
                 var result = await _services.GETGetInList(PreArrivalNotificationId);
-                return Ok(result);
+                return Ok(result); 
             }
             catch (Exception ex)
             {
