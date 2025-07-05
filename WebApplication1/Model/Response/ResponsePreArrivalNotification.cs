@@ -7,7 +7,7 @@ namespace DpeApi.Model.Response
     {
         [Key]
         public int? PreArrivalNotificationId { get; set; }
-        public DateTime PreArrivalDate { get; set; }
+        public DateTime? PreArrivalDate { get; set; }
         public string PreArrivalNo { get; set; }
         public string ContainerNo { get; set; }
         public string Size { get; set; }
@@ -15,8 +15,8 @@ namespace DpeApi.Model.Response
         public string WTKg { get; set; }
         public string Value { get; set; }
         public string Commodity { get; set; }
-        public DateTime ExpectedArrivalDate { get; set; }
-        public TimeSpan ExpectedArrivalTime { get; set; }
+        public DateTime? ExpectedArrivalDate { get; set; }
+        public TimeSpan? ExpectedArrivalTime { get; set; }
 
 
     }

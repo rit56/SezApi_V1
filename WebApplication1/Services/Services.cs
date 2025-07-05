@@ -486,20 +486,20 @@ namespace DpeApi.Services
                 var result = await _db.AddEditResponse
                     .FromSqlInterpolated($@"
                 EXEC SP_AddPreArrivalNotification 
-
+                    {PreArr.PreArrivalNotificationId},
                     {PreArr.PreArrivalDate},
-					{PreArr.PreArrivalNo },
-					{PreArr.ContainerNo },
-					{PreArr.Size },
-					{PreArr.Type},
-					{PreArr.WTKg },
-					{PreArr.Value },
-					{PreArr.Commodity},
-					{PreArr.ExpectedArrivalDate },
-					{PreArr.ExpectedArrivalTime},
-                    
+                    {PreArr.PreArrivalNo},
+	                {PreArr.ContainerNo},
+	                {PreArr.Size},
+	                {PreArr.Type},
+	                {PreArr.WTKg},
+	                {PreArr.Value},
+	                {PreArr.Commodity},
+	                {PreArr.ExpectedArrivalDate},
+	                {PreArr.ExpectedArrivalTime},
                     {PreArr.CreatedBy},
                     {PreArr.UpdatedBy}
+					
             ").ToListAsync();
 
                 response.Response = result.FirstOrDefault()?.Response ?? "No response";
@@ -512,26 +512,31 @@ namespace DpeApi.Services
             return response;
         }
 
-        public async Task<Response<List<ResponsePreArrivalNotification>>> GetPreArrivalNotification(int? PreArrID)
+        public async Task<Response<List<ResponsePreArrivalNotification>>> GetPreArrivalNotification(int? PreArrivalNotificationId)
         {
             var response = new Response<List<ResponsePreArrivalNotification>>();
 
-            //try
-            //{
-            //    var result = await _db.GetGroundRentChargesResponse
-            //        .FromSqlInterpolated($@"
-            //    EXEC SP_GetGroundRentChargeList 
-            //    {PreArrID}
-            //    ").ToListAsync();
+            try
+            {
 
-            //    response.Data = result;
-            //    response.Status = true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    response.Data = new List<ResponsePreArrivalNotification>();
-            //    response.Status = false;
-            //}
+                var data = await _db.GetPreArrivalNotificationResponse
+                   .FromSqlInterpolated($"EXEC SP_GetPreArrivalNotificationList {PreArrivalNotificationId}")
+                   .ToListAsync();
+
+
+                return new Response<List<ResponsePreArrivalNotification>>
+                {
+                    Data = data,
+                    Status = true
+                };
+
+               
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<ResponsePreArrivalNotification>();
+                response.Status = false;
+            }
 
             return response;
         }

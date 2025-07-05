@@ -29,7 +29,9 @@ namespace DpeApi.Data
 
         public DbSet<ResponseReeferCharge> GetReeferChargesResponse { get; set; }
 
-        public DbSet<ResponseMISCCharge> GetMISCChargesResponse { get; set; } 
+        public DbSet<ResponseMISCCharge> GetMISCChargesResponse { get; set; }
+
+        public DbSet<ResponsePreArrivalNotification> GetPreArrivalNotificationResponse { get; set; }
 
     }
 }

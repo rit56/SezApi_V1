@@ -36,12 +36,12 @@ namespace DpeApi.Controllers
             }
         }
         [HttpGet("GETPreArrivalNotificationList")]
-        public async Task<IActionResult> GETPreArrivalNotificationList(int? GroundRentId)
+        public async Task<IActionResult> GETPreArrivalNotificationList(int? PreArrivalNotificationId)
         {
 
             try
             {
-                var result = await _services.GetPreArrivalNotification(GroundRentId);
+                var result = await _services.GetPreArrivalNotification(PreArrivalNotificationId);
                 return Ok(result);
             }
             catch (Exception ex)
