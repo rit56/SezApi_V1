@@ -18,8 +18,8 @@ namespace DpeApi.Controllers
         {
             return View();
         }
-        [HttpPost("AddGetIn")]
-        public async Task<IActionResult> AddGetIn(RequestGetIn request)
+        [HttpPost("AddGateIn")]
+        public async Task<IActionResult> AddGateIn(RequestGetIn request)
         {
             if (request == null)
             {
@@ -27,7 +27,7 @@ namespace DpeApi.Controllers
             }
             try
             {
-                var result = await _services.AddGetIn(request);
+                var result = await _services.AddGateIn(request);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -35,13 +35,13 @@ namespace DpeApi.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("GETGetInList")]
-        public async Task<IActionResult> GETGetInList(int? PreArrivalNotificationId)
+        [HttpGet("GETGateInList")]
+        public async Task<IActionResult> GETGateInList(int? PreArrivalNotificationId)
         {
 
             try
             {
-                var result = await _services.GETGetInList(PreArrivalNotificationId);
+                var result = await _services.GETGateInList(PreArrivalNotificationId);
                 return Ok(result); 
             }
             catch (Exception ex)

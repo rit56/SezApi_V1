@@ -599,7 +599,7 @@ namespace DpeApi.Services
         #endregion
 
         #region GetIn
-        public async Task<AddEditResponse> AddGetIn(RequestGetIn getIn)
+        public async Task<AddEditResponse> AddGateIn(RequestGetIn getIn)
         {
             var response = new AddEditResponse();
             try
@@ -634,7 +634,7 @@ namespace DpeApi.Services
             return response;
         }
 
-        public async Task<Response<List<ResponseGetIn>>> GETGetInList(int? PreArrivalNotificationId)
+        public async Task<Response<List<ResponseGetIn>>> GETGateInList(int? PreArrivalNotificationId)
         {
             var response = new Response<List<ResponseGetIn>>();
 

@@ -47,8 +47,8 @@ namespace DpeApi.Services
         #endregion
 
         #region GetIN
-        Task<AddEditResponse> AddGetIn(RequestGetIn PreArr);
-        Task<Response<List<ResponseGetIn>>> GETGetInList(int? PreArrID);
+        Task<AddEditResponse> AddGateIn(RequestGetIn PreArr);
+        Task<Response<List<ResponseGetIn>>> GETGateInList(int? PreArrID);
         #endregion
 
     }
