@@ -22,7 +22,10 @@ namespace DpeApi.Data
         public DbSet<MstOperation> GetMstOperationList { get; set; }
         public DbSet<MstSac> GetMstSac { get; set; }
         public DbSet<MstCommodity> GetMstCommodity { get; set; }
-        
+        public DbSet<MstReferenceNo> GetMstReferenceNo { get; set; }
+        public DbSet<MstShippingLine> GetMstShippingLine { get; set; }
+        public DbSet<MstCHA> GetMstCHA { get; set; }
+
         public DbSet<ResponseHTCharge> GetHTChargesResponse { get; set; }
 
         public DbSet<ResponseGroundRentCharge> GetGroundRentChargesResponse { get; set; }

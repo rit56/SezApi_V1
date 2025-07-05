@@ -251,6 +251,62 @@ namespace DpeApi.Services
 
             return response;
         }
+       
+        public async Task<Response<List<MstReferenceNo>>> GetReferenceNoAll()
+        {
+            var response = new Response<List<MstReferenceNo>>();
+
+            try
+            {
+                response.Data = await _db.GetMstReferenceNo.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstReferenceNo>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+   
+        public async Task<Response<List<MstShippingLine>>> GetShippingLineAll()
+        {
+            var response = new Response<List<MstShippingLine>>();
+
+            try
+            {
+                response.Data = await _db.GetMstShippingLine.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstShippingLine>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstCHA>>> GetCHAAll()
+        {
+            var response = new Response<List<MstCHA>>();
+
+            try
+            {
+                response.Data = await _db.GetMstCHA.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstCHA>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+       
+
         public async Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge)
         {
             var response = new AddEditResponse();

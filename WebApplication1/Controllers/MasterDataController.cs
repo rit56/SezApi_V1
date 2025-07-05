@@ -79,5 +79,48 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("GetReferenceNoAll")]
+        public async Task<ActionResult<List<MstReferenceNo>>> GetReferenceNoAll()
+        {
+
+            var response = await _services.GetReferenceNoAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("GetShippingLineAll")]
+        public async Task<ActionResult<List<MstShippingLine>>> GetShippingLineAll()
+        {
+
+            var response = await _services.GetShippingLineAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
+
+
+        [HttpGet("GetCHAAll")]
+        public async Task<ActionResult<List<MstCHA>>> GetCHAAll()
+        {
+
+            var response = await _services.GetCHAAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
     }
 }
