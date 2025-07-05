@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class MstReferenceNo
 {
     [Key]
-    public int? ReferenceNoID { get; set; }
+    public int? MstRefNo { get; set; }
     public string ReferenceNo { get; set; }
    
 }
