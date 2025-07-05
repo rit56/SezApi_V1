@@ -14,6 +14,8 @@ namespace DpeApi.Services
         Task<Response<List<MstOperation>>> GetMstOperation();
         Task<Response<MstSac>> GetMstSacByOperation(int SacId);//
         Task<Response<List<MstSac>>> GetMstSacAll();
+        Task<Response<List<MstCommodity>>> GetMstCommodityAll();
+        
         Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge);
         Task<Response<List<ResponseHTCharge>>> GetHTCharge(int? HTChargesID);
 
@@ -30,6 +32,11 @@ namespace DpeApi.Services
         #region MISCCharge
         Task<AddEditResponse> AddMISCCharge(RequestMISCCharge MISCCharge);
         Task<Response<List<ResponseMISCCharge>>> GetMISCCharge(int? MiscellaneousId);
+        #endregion
+
+        #region PreArrivalNotification
+        Task<AddEditResponse> AddPreArrivalNotification(RequestPreArrivalNotification PreArr);
+        Task<Response<List<ResponsePreArrivalNotification>>> GetPreArrivalNotification(int? PreArrID);
         #endregion
 
     }

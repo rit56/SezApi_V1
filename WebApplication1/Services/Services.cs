@@ -233,7 +233,24 @@ namespace DpeApi.Services
 
             return response;
         }
-       
+        public async Task<Response<List<MstCommodity>>> GetMstCommodityAll()
+        {
+            var response = new Response<List<MstCommodity>>();
+
+            try
+            {
+
+                response.Data = await _db.GetMstCommodity.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstCommodity>();
+                response.Status = false;
+            }
+
+            return response;
+        }
         public async Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge)
         {
             var response = new AddEditResponse();
@@ -456,6 +473,67 @@ namespace DpeApi.Services
                     Status = false
                 };
             }
+        }
+        #endregion
+
+        #region PreArrivalNotification
+  
+        public async Task<AddEditResponse> AddPreArrivalNotification(RequestPreArrivalNotification PreArr)
+        {
+            var response = new AddEditResponse();
+            try
+            {
+                var result = await _db.AddEditResponse
+                    .FromSqlInterpolated($@"
+                EXEC SP_AddPreArrivalNotification 
+
+                    {PreArr.PreArrivalDate},
+					{PreArr.PreArrivalNo },
+					{PreArr.ContainerNo },
+					{PreArr.Size },
+					{PreArr.Type},
+					{PreArr.WTKg },
+					{PreArr.Value },
+					{PreArr.Commodity},
+					{PreArr.ExpectedArrivalDate },
+					{PreArr.ExpectedArrivalTime},
+                    
+                    {PreArr.CreatedBy},
+                    {PreArr.UpdatedBy}
+            ").ToListAsync();
+
+                response.Response = result.FirstOrDefault()?.Response ?? "No response";
+            }
+            catch (Exception ex)
+            {
+                response.Response = "Some error occurred";
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<ResponsePreArrivalNotification>>> GetPreArrivalNotification(int? PreArrID)
+        {
+            var response = new Response<List<ResponsePreArrivalNotification>>();
+
+            //try
+            //{
+            //    var result = await _db.GetGroundRentChargesResponse
+            //        .FromSqlInterpolated($@"
+            //    EXEC SP_GetGroundRentChargeList 
+            //    {PreArrID}
+            //    ").ToListAsync();
+
+            //    response.Data = result;
+            //    response.Status = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    response.Data = new List<ResponsePreArrivalNotification>();
+            //    response.Status = false;
+            //}
+
+            return response;
         }
         #endregion
     }

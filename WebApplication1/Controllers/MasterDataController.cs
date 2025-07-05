@@ -65,5 +65,19 @@ namespace DpeApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("GetCommodityAll")]
+        public async Task<ActionResult<List<MstCommodity>>> GetCommodityAll()
+        {
+
+            var response = await _services.GetMstCommodityAll();
+
+            if (response.Data == null)
+            {
+                return NotFound(new { message = "No entries found." });
+            }
+
+            return Ok(response);
+        }
     }
 }
