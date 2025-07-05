@@ -221,7 +221,7 @@ namespace DpeApi.Services
 
             try
             {
-                
+
                 response.Data = await _db.GetMstSac.ToListAsync();
                 response.Status = true;
             }
@@ -679,7 +679,7 @@ namespace DpeApi.Services
         #endregion
 
         #region PreArrivalNotification
-  
+
         public async Task<AddEditResponse> AddPreArrivalNotification(RequestPreArrivalNotification PreArr)
         {
             var response = new AddEditResponse();
@@ -697,11 +697,15 @@ namespace DpeApi.Services
 	                {PreArr.WTKg},
 	                {PreArr.Value},
 	                {PreArr.Commodity},
+                    {PreArr.PackListPDFName}, 
+                    {PreArr.PackListPDF_GUID},
+                    {PreArr.CheckListPDFName},
+                    {PreArr.CheckListPDF_GUID},
 	                {PreArr.ExpectedArrivalDate},
 	                {PreArr.ExpectedArrivalTime},
                     {PreArr.CreatedBy},
                     {PreArr.UpdatedBy}
-					
+
             ").ToListAsync();
 
                 response.Response = result.FirstOrDefault()?.Response ?? "No response";
@@ -732,7 +736,7 @@ namespace DpeApi.Services
                     Status = true
                 };
 
-               
+
             }
             catch (Exception ex)
             {

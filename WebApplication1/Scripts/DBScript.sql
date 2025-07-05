@@ -393,4 +393,120 @@ DECLARE @SacCode NVARCHAR(7) = NULL
     END CATCH
 END
 
+------------05-07-2025-------------------
+
+ALTER TABLE [dbo].[mstPreArrivalNotification]
+ADD PackListPDFName   NVARCHAR(200),
+    PackListPDF_GUID  NVARCHAR(50),
+	CheckListPDFName  NVARCHAR(200),
+    CheckListPDF_GUID NVARCHAR(50);
+
+
+/****** Object:  StoredProcedure [dbo].[SP_AddPreArrivalNotification]    Script Date: 05-07-2025 18:02:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[SP_AddPreArrivalNotification]
+
+    @PreArrivalNotificationId INT = 0,
+	@PreArrivalDate DATE = NULL,
+	@PreArrivalNo NVARCHAR(100) = NULL,
+	@ContainerNo NVARCHAR(100) = NULL,
+	@Size INT = 0,
+    @Type INT = 0,
+	@WTKg NVARCHAR(100) = NULL,
+	@Value NVARCHAR(100) = NULL,
+	@Commodity INT = 0,
+	@PackListPDFName NVARCHAR(50) = NULL,
+	@PackListPDF_GUID NVARCHAR(50) = NULL,
+	@CheckListPDFName NVARCHAR(50) = NULL,
+	@CheckListPDF_GUID NVARCHAR(50) = NULL,
+	@ExpectedArrivalDate DATE = NULL,
+	@ExpectedArrivalTime time(7) = NULL,
+	@CreatedBy INT = NULL,
+	@UpdatedBy INT = NULL
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+	BEGIN TRY
+    BEGIN TRANSACTION;
+
+		IF ISNULL(@PreArrivalNotificationId,0) = 0
+		BEGIN
+			INSERT INTO  [dbo].[mstPreArrivalNotification]
+			(
+					     PreArrivalDate,
+					     PreArrivalNo ,
+					     ContainerNo ,
+					     Size ,
+					     Type,
+					     WTKg,
+					     Value,
+					     Commodity,
+						 PackListPDFName,
+						 PackListPDF_GUID,
+						 CheckListPDFName, 
+						 CheckListPDF_GUID,
+					     ExpectedArrivalDate,
+					     ExpectedArrivalTime,
+						 [CreatedBy],
+						 [CreatedOn]
+			)
+			VALUES (
+						 @PreArrivalDate,
+					     @PreArrivalNo,
+					     @ContainerNo,
+					     @Size,
+					     @Type,
+					     @WTKg,
+					     @Value,
+					     @Commodity,
+						 @PackListPDFName,
+						 @PackListPDF_GUID,
+						 @CheckListPDFName, 
+						 @CheckListPDF_GUID,
+					     @ExpectedArrivalDate,
+					     @ExpectedArrivalTime,
+						 @CreatedBy, 
+						 GETDATE()
+					);
+		END
+		ELSE
+		BEGIN
+			UPDATE  [dbo].[mstPreArrivalNotification]
+			SET
+				    [PreArrivalDate]=@PreArrivalDate,
+					PreArrivalNo= @PreArrivalNo,
+					ContainerNo =@ContainerNo,
+					Size= @Size,
+					Type=@Type,
+					WTKg =@WTKg,
+					Value=@Value ,
+					Commodity=@Commodity,
+					PackListPDFName=@PackListPDFName,
+					PackListPDF_GUID=@PackListPDF_GUID,
+					CheckListPDFName=@CheckListPDFName, 
+					CheckListPDF_GUID=@CheckListPDFName,
+					ExpectedArrivalDate =@ExpectedArrivalDate,
+					ExpectedArrivalTime=@ExpectedArrivalTime,
+					UpdatedBy = @UpdatedBy,
+					UpdatedOn = GETDATE()
+			WHERE [PreArrivalNotificationId] =@PreArrivalNotificationId ;
+		END
+
+		COMMIT;
+		SELECT 'OK' AS response;
+	END TRY
+	BEGIN CATCH
+		IF @@TRANCOUNT > 0
+			ROLLBACK;
+
+		SELECT 'NOT OK' AS response;
+	END CATCH
+
+	select 'OK' AS response
+END
+
 

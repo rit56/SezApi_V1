@@ -1,4 +1,5 @@
-﻿using DpeApi.Model.Request;
+﻿using DpeApi.Helper;
+using DpeApi.Model.Request;
 using DpeApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,15 +20,43 @@ namespace DpeApi.Controllers
             return View();
         }
         [HttpPost("AddPreArrivalNotification")]
-        public async Task<IActionResult> AddPreArrivalNotification(RequestPreArrivalNotification request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> AddPreArrivalNotification([FromForm] RequestPreArrivalNotification model)
         {
-            if (request == null)
+            if (model == null)
             {
                 return BadRequest("Request data is required.");
             }
             try
             {
-                var result = await _services.AddPreArrivalNotification(request);
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedData");
+
+                // Save PackListPDF
+                if (model.PackListPDF != null)
+                {
+                    var packListResult = await PDFHelper.SavePdf(model.PackListPDF, "PackListPDF", folderPath);
+                    if (!packListResult.Success)
+                        return BadRequest(packListResult.Message);
+                    else
+                    {
+                        model.PackListPDFName = packListResult.FileName;
+                        model.PackListPDF_GUID = packListResult.FileGUID;
+                    }
+                }
+
+                // Save CheckListPDF
+                if (model.CheckListPDF != null)
+                {
+                    var checkListResult = await PDFHelper.SavePdf(model.CheckListPDF, "CheckListPDF", folderPath);
+                    if (!checkListResult.Success)
+                        return BadRequest(checkListResult.Message);
+                    else
+                    {
+                        model.CheckListPDFName = checkListResult.FileName;
+                        model.CheckListPDF_GUID = checkListResult.FileGUID;
+                    }
+                }
+                var result = await _services.AddPreArrivalNotification(model);
                 return Ok(result);
             }
             catch (Exception ex)
