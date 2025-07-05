@@ -1,6 +1,7 @@
 ﻿using DpeApi.Model.DBModels;
 using DpeApi.Model.Request;
 using DpeApi.Model.Response;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DpeApi.Services
 {
@@ -15,7 +16,13 @@ namespace DpeApi.Services
         Task<Response<MstSac>> GetMstSacByOperation(int SacId);//
         Task<Response<List<MstSac>>> GetMstSacAll();
         Task<Response<List<MstCommodity>>> GetMstCommodityAll();
-        
+        Task<Response<List<MstReferenceNo>>> GetReferenceNoAll();
+        Task<Response<List<MstShippingLine>>> GetShippingLineAll();
+
+        Task<Response<List<MstCHA>>> GetCHAAll();
+
+
+
         Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge);
         Task<Response<List<ResponseHTCharge>>> GetHTCharge(int? HTChargesID);
 
@@ -37,6 +44,11 @@ namespace DpeApi.Services
         #region PreArrivalNotification
         Task<AddEditResponse> AddPreArrivalNotification(RequestPreArrivalNotification PreArr);
         Task<Response<List<ResponsePreArrivalNotification>>> GetPreArrivalNotification(int? PreArrID);
+        #endregion
+
+        #region GetIN
+        Task<AddEditResponse> AddGateIn(RequestGetIn PreArr);
+        Task<Response<List<ResponseGetIn>>> GETGateInList(int? PreArrID);
         #endregion
 
     }

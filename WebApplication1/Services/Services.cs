@@ -251,6 +251,62 @@ namespace DpeApi.Services
 
             return response;
         }
+       
+        public async Task<Response<List<MstReferenceNo>>> GetReferenceNoAll()
+        {
+            var response = new Response<List<MstReferenceNo>>();
+
+            try
+            {
+                response.Data = await _db.GetMstReferenceNo.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstReferenceNo>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+   
+        public async Task<Response<List<MstShippingLine>>> GetShippingLineAll()
+        {
+            var response = new Response<List<MstShippingLine>>();
+
+            try
+            {
+                response.Data = await _db.GetMstShippingLine.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstShippingLine>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<MstCHA>>> GetCHAAll()
+        {
+            var response = new Response<List<MstCHA>>();
+
+            try
+            {
+                response.Data = await _db.GetMstCHA.ToListAsync();
+                response.Status = true;
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<MstCHA>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+       
+
         public async Task<AddEditResponse> AddHTCharge(RequestHTCharge HTCharge)
         {
             var response = new AddEditResponse();
@@ -545,5 +601,72 @@ namespace DpeApi.Services
             return response;
         }
         #endregion
+
+        #region GetIn
+        public async Task<AddEditResponse> AddGateIn(RequestGetIn getIn)
+        {
+            var response = new AddEditResponse();
+            try
+            {
+                var result = await _db.AddEditResponse
+                    .FromSqlInterpolated($@"
+                EXEC SP_AddGetIn 
+                    {getIn.GetInId} ,
+	                {getIn.CFSCode} ,
+	                {getIn.RefNo} ,
+	                {getIn.EntryDate},
+	                {getIn.EntryTime},
+	                {getIn.SystemDate},
+	                {getIn.SystemTime},
+	                {getIn.ContainerNo},
+	                {getIn.CustomSealNo},
+	                {getIn.Size},
+	                {getIn.ShippingLine},
+	                {getIn.CHA},
+                    {getIn.CreatedBy},
+                    {getIn.UpdatedBy}
+					
+            ").ToListAsync();
+
+                response.Response = result.FirstOrDefault()?.Response ?? "No response";
+            }
+            catch (Exception ex)
+            {
+                response.Response = "Some error occurred";
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<ResponseGetIn>>> GETGateInList(int? PreArrivalNotificationId)
+        {
+            var response = new Response<List<ResponseGetIn>>();
+
+            try
+            {
+
+                var data = await _db.GetGetIn
+                   .FromSqlInterpolated($"EXEC SP_GetGetinList {PreArrivalNotificationId}")
+                   .ToListAsync();
+
+
+                return new Response<List<ResponseGetIn>>
+                {
+                    Data = data,
+                    Status = true
+                };
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<ResponseGetIn>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+        #endregion
+        
     }
 }
