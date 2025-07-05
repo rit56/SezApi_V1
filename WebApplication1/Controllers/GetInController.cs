@@ -19,7 +19,7 @@ namespace DpeApi.Controllers
             return View();
         }
         [HttpPost("AddGetIn")]
-        public async Task<IActionResult> AddGetIn(RequestPreArrivalNotification request)
+        public async Task<IActionResult> AddGetIn(RequestGetIn request)
         {
             if (request == null)
             {
@@ -27,7 +27,7 @@ namespace DpeApi.Controllers
             }
             try
             {
-                var result = await _services.AddPreArrivalNotification(request);
+                var result = await _services.AddGetIn(request);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -41,7 +41,7 @@ namespace DpeApi.Controllers
 
             try
             {
-                var result = await _services.GetPreArrivalNotification(PreArrivalNotificationId);
+                var result = await _services.GETGetInList(PreArrivalNotificationId);
                 return Ok(result);
             }
             catch (Exception ex)

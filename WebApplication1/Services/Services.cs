@@ -597,5 +597,72 @@ namespace DpeApi.Services
             return response;
         }
         #endregion
+
+        #region GetIn
+        public async Task<AddEditResponse> AddGetIn(RequestGetIn getIn)
+        {
+            var response = new AddEditResponse();
+            try
+            {
+                var result = await _db.AddEditResponse
+                    .FromSqlInterpolated($@"
+                EXEC SP_AddGetIn 
+                    {getIn.GetInId} ,
+	                {getIn.CFSCode} ,
+	                {getIn.RefNo} ,
+	                {getIn.EntryDate},
+	                {getIn.EntryTime},
+	                {getIn.SystemDate},
+	                {getIn.SystemTime},
+	                {getIn.ContainerNo},
+	                {getIn.CustomSealNo},
+	                {getIn.Size},
+	                {getIn.ShippingLine},
+	                {getIn.CHA},
+                    {getIn.CreatedBy},
+                    {getIn.UpdatedBy}
+					
+            ").ToListAsync();
+
+                response.Response = result.FirstOrDefault()?.Response ?? "No response";
+            }
+            catch (Exception ex)
+            {
+                response.Response = "Some error occurred";
+            }
+
+            return response;
+        }
+
+        public async Task<Response<List<ResponseGetIn>>> GETGetInList(int? PreArrivalNotificationId)
+        {
+            var response = new Response<List<ResponseGetIn>>();
+
+            try
+            {
+
+                var data = await _db.GetGetIn
+                   .FromSqlInterpolated($"EXEC SP_GetGetinList {PreArrivalNotificationId}")
+                   .ToListAsync();
+
+
+                return new Response<List<ResponseGetIn>>
+                {
+                    Data = data,
+                    Status = true
+                };
+
+
+            }
+            catch (Exception ex)
+            {
+                response.Data = new List<ResponseGetIn>();
+                response.Status = false;
+            }
+
+            return response;
+        }
+        #endregion
+        
     }
 }

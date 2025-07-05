@@ -46,5 +46,10 @@ namespace DpeApi.Services
         Task<Response<List<ResponsePreArrivalNotification>>> GetPreArrivalNotification(int? PreArrID);
         #endregion
 
+        #region GetIN
+        Task<AddEditResponse> AddGetIn(RequestGetIn PreArr);
+        Task<Response<List<ResponseGetIn>>> GETGetInList(int? PreArrID);
+        #endregion
+
     }
 }
